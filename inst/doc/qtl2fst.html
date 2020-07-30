@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2020-07-24" />
+
+<title>qtl2fst user guide</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">qtl2fst user guide</h1>
+<h4 class="date">2020-07-24</h4>
+
+
+
+<p>Memory usage can be a big obstacle in the use of <a href="https://kbroman.org/qtl2">R/qtl2</a>, particularly regarding the QTL genotype probabilities calculated by <code>calc_genoprob()</code>. For dense markers in multi-parent populations, these can use gigabytes of RAM.</p>
+<p>This led us to develop ways to store the genotype probabilities on disk. In the present package, we rely on the <a href="https://www.fstpackage.org">fst package</a>, which includes the option to compress the data.</p>
+<p>Let’s first load the R/qtl2 and R/qtl2fst packages.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(qtl2)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(qtl2fst)</a></code></pre></div>
+<p>In this vignette, we’ll give a quick illustration of the <a href="https://github.com/rqtl/qtl2fst">R/qtl2fst</a> package using the <a href="https://kbroman.org/qtl2/pages/sampledata.html#f2-intercross">iron dataset</a> included with <a href="https://kbroman.org/qtl2">R/qtl2</a>. We’ll first load the data.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">iron &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;iron.zip&quot;</span>, <span class="dt">package=</span><span class="st">&quot;qtl2&quot;</span>))</a></code></pre></div>
+<p>Let’s calculate the genotype probabilities and convert them to allele probabilities.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">pr &lt;-<span class="st"> </span><span class="kw">calc_genoprob</span>(iron, <span class="dt">error_prob=</span><span class="fl">0.002</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">apr &lt;-<span class="st"> </span><span class="kw">genoprob_to_alleleprob</span>(pr)</a></code></pre></div>
+<p>Use the function <code>fst_genoprob()</code> to write the probabilities to a fst database. You could do the same thing with the allele probabilities.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">tmpdir &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;iron_genoprob&quot;</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">dir.create</span>(tmpdir)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">fpr &lt;-<span class="st"> </span><span class="kw">fst_genoprob</span>(pr, <span class="st">&quot;pr&quot;</span>, tmpdir, <span class="dt">quiet=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">fapr &lt;-<span class="st"> </span><span class="kw">fst_genoprob</span>(apr, <span class="st">&quot;apr&quot;</span>, tmpdir, <span class="dt">quiet=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p>The genotype probabilities are saved in a set of files, one per chromosome. There is also an RDS index file, which is a copy of the index object returned by <code>fst_genoprob()</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">list.files</span>(tmpdir)</a></code></pre></div>
+<pre><code>##  [1] &quot;apr_1.fst&quot;        &quot;apr_10.fst&quot;       &quot;apr_11.fst&quot;       &quot;apr_12.fst&quot;      
+##  [5] &quot;apr_13.fst&quot;       &quot;apr_14.fst&quot;       &quot;apr_15.fst&quot;       &quot;apr_16.fst&quot;      
+##  [9] &quot;apr_17.fst&quot;       &quot;apr_18.fst&quot;       &quot;apr_19.fst&quot;       &quot;apr_2.fst&quot;       
+## [13] &quot;apr_3.fst&quot;        &quot;apr_4.fst&quot;        &quot;apr_5.fst&quot;        &quot;apr_6.fst&quot;       
+## [17] &quot;apr_7.fst&quot;        &quot;apr_8.fst&quot;        &quot;apr_9.fst&quot;        &quot;apr_X.fst&quot;       
+## [21] &quot;apr_fstindex.rds&quot; &quot;pr_1.fst&quot;         &quot;pr_10.fst&quot;        &quot;pr_11.fst&quot;       
+## [25] &quot;pr_12.fst&quot;        &quot;pr_13.fst&quot;        &quot;pr_14.fst&quot;        &quot;pr_15.fst&quot;       
+## [29] &quot;pr_16.fst&quot;        &quot;pr_17.fst&quot;        &quot;pr_18.fst&quot;        &quot;pr_19.fst&quot;       
+## [33] &quot;pr_2.fst&quot;         &quot;pr_3.fst&quot;         &quot;pr_4.fst&quot;         &quot;pr_5.fst&quot;        
+## [37] &quot;pr_6.fst&quot;         &quot;pr_7.fst&quot;         &quot;pr_8.fst&quot;         &quot;pr_9.fst&quot;        
+## [41] &quot;pr_X.fst&quot;         &quot;pr_fstindex.rds&quot;</code></pre>
+<p>You can treat the <code>fpr</code> and <code>fapr</code> objects as if they were the genotype probabilities themselves. For example, use <code>names()</code> to get the chromosome names.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">names</span>(fpr)</a></code></pre></div>
+<pre><code>##  [1] &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot;  &quot;9&quot;  &quot;10&quot; &quot;11&quot; &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot;
+## [16] &quot;16&quot; &quot;17&quot; &quot;18&quot; &quot;19&quot; &quot;X&quot;</code></pre>
+<div id="selecting-one-chromosome" class="section level3">
+<h3>Selecting one chromosome</h3>
+<p>If you selecting a chromosome, it will be read from the fst database and into an array.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">apr_X &lt;-<span class="st"> </span>fapr[[<span class="st">&quot;X&quot;</span>]]</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">dim</span>(apr_X)</a></code></pre></div>
+<pre><code>## [1] 284   2   2</code></pre>
+<p>You can also use the <code>$</code> operator.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">apr_X &lt;-<span class="st"> </span>fapr<span class="op">$</span>X</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">dim</span>(apr_X)</a></code></pre></div>
+<pre><code>## [1] 284   2   2</code></pre>
+</div>
+<div id="subsetting-by-ind-chr-mar" class="section level3">
+<h3>Subsetting by ind, chr, mar</h3>
+<p>You can subset by individuals, chromosome, and markers, with <code>subset(object,ind,chr,mar)</code> or <code>[ind,chr,mar]</code>. Just the selected portion will be read, and the fst database will not be altered.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">selected_ind &lt;-<span class="st"> </span><span class="kw">subset</span>(fapr, <span class="dt">ind=</span><span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">chr=</span><span class="kw">c</span>(<span class="st">&quot;2&quot;</span>,<span class="st">&quot;3&quot;</span>))</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">dim</span>(fapr)</a></code></pre></div>
+<pre><code>##       1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19
+## ind 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284
+## gen   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2
+## mar   3   5   2   2   2   2   7   8   5   2   7   2   2   2   2   5   2   2   2
+##       X
+## ind 284
+## gen   2
+## mar   2</code></pre>
+<p>You can also subset with brackets in various ways.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">fapr_sub1 &lt;-<span class="st"> </span>fapr[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="kw">c</span>(<span class="st">&quot;2&quot;</span>,<span class="st">&quot;3&quot;</span>)][[<span class="st">&quot;3&quot;</span>]]</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">fapr_sub2 &lt;-<span class="st"> </span>fapr[,<span class="st">&quot;2&quot;</span>]</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">fapr_sub23 &lt;-<span class="st"> </span>fapr[,<span class="kw">c</span>(<span class="st">&quot;2&quot;</span>,<span class="st">&quot;3&quot;</span>)]</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">fapr_subX &lt;-<span class="st"> </span>fapr[,<span class="st">&quot;X&quot;</span>]</a></code></pre></div>
+<p>You can use a third dimension for markers, but be careful that if you select a subset of markers that excludes one or more chromosomes, those will be dropped.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">dim</span>(<span class="kw">subset</span>(fapr, <span class="dt">mar=</span><span class="dv">1</span><span class="op">:</span><span class="dv">30</span>))</a></code></pre></div>
+<pre><code>##       1   2   3   4   5   6   7   8
+## ind 284 284 284 284 284 284 284 284
+## gen   2   2   2   2   2   2   2   2
+## mar   3   5   2   2   2   2   7   7</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">dim</span>(fapr[ , , <span class="kw">dimnames</span>(fapr)<span class="op">$</span>mar<span class="op">$</span>X[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]])</a></code></pre></div>
+<pre><code>##       X
+## ind 284
+## gen   2
+## mar   2</code></pre>
+</div>
+<div id="binding-by-columns-or-rows" class="section level3">
+<h3>Binding by columns or rows</h3>
+<p>Binding by columns (chromosomes) or rows (individuals) may cause creation of a new fst database if input objects arose from different fst databases. However, if objects are subsets of the same <code>&quot;fst_genoprob&quot;</code> object, then it reuses the one fst database. Further, if objects have the same directory and file basename for their fst databases, they will be combined without creation of any new fst databases.</p>
+<p>See <code>example(cbind.fst_genoprob)</code> and <code>example(rbind.fst_genoprob)</code> with objects having distinct fst databases.</p>
+<p>Here’s column bind (chromosomes).</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">fapr_sub223 &lt;-<span class="st"> </span><span class="kw">cbind</span>(fapr_sub2,fapr_sub23)</a></code></pre></div>
+<p>And here’s row bind (individuals)..</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">f23a &lt;-<span class="st"> </span>fapr[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="kw">c</span>(<span class="st">&quot;2&quot;</span>,<span class="st">&quot;3&quot;</span>)]</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">f23b &lt;-<span class="st"> </span>fapr[<span class="dv">40</span><span class="op">:</span><span class="dv">79</span>, <span class="kw">c</span>(<span class="st">&quot;2&quot;</span>,<span class="st">&quot;3&quot;</span>)]</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">f23 &lt;-<span class="st"> </span><span class="kw">rbind</span>(f23a, f23b)</a></code></pre></div>
+<p>Subset on markers. This way only extracts the selected <code>markers</code> from the fst database before creating the array.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">markers &lt;-<span class="st"> </span><span class="kw">dimnames</span>(fapr<span class="op">$</span>X)[[<span class="dv">3</span>]][<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">dim</span>(fapr[,,markers]<span class="op">$</span>X)</a></code></pre></div>
+<pre><code>## [1] 284   2   2</code></pre>
+<p>This way extracts all markers on <code>X</code>, creates the array, then subsets on selected <code>markers</code>.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">markers &lt;-<span class="st"> </span><span class="kw">dimnames</span>(fapr<span class="op">$</span>X)[[<span class="dv">3</span>]]</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw">dim</span>(fapr<span class="op">$</span>X[,,markers[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]])</a></code></pre></div>
+<pre><code>## [1] 284   2   2</code></pre>
+<p>Two <code>&quot;fst_genoprob&quot;</code> objects using the same database. Combine using <code>cbind</code>. Notice that the order of chromosomes is reversed by joining <code>fapr2</code> to <code>fapr3</code>. Be sure to not overwrite existing fst databases!</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">fapr2 &lt;-<span class="st"> </span><span class="kw">fst_genoprob</span>(<span class="kw">subset</span>(apr, <span class="dt">chr=</span><span class="st">&quot;2&quot;</span>), <span class="st">&quot;aprx&quot;</span>, tmpdir, <span class="dt">quiet=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">fapr3 &lt;-<span class="st"> </span><span class="kw">fst_genoprob</span>(<span class="kw">subset</span>(apr, <span class="dt">chr=</span><span class="st">&quot;3&quot;</span>), <span class="st">&quot;aprx&quot;</span>, tmpdir, <span class="dt">quiet=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">fapr32 &lt;-<span class="st"> </span><span class="kw">cbind</span>(fapr3,fapr2)</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="kw">dim</span>(fapr32)</a></code></pre></div>
+<pre><code>##       3   2
+## ind 284 284
+## gen   2   2
+## mar   2   5</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">list.files</span>(tmpdir)</a></code></pre></div>
+<pre><code>##  [1] &quot;apr_1.fst&quot;         &quot;apr_10.fst&quot;        &quot;apr_11.fst&quot;       
+##  [4] &quot;apr_12.fst&quot;        &quot;apr_13.fst&quot;        &quot;apr_14.fst&quot;       
+##  [7] &quot;apr_15.fst&quot;        &quot;apr_16.fst&quot;        &quot;apr_17.fst&quot;       
+## [10] &quot;apr_18.fst&quot;        &quot;apr_19.fst&quot;        &quot;apr_2.fst&quot;        
+## [13] &quot;apr_3.fst&quot;         &quot;apr_4.fst&quot;         &quot;apr_5.fst&quot;        
+## [16] &quot;apr_6.fst&quot;         &quot;apr_7.fst&quot;         &quot;apr_8.fst&quot;        
+## [19] &quot;apr_9.fst&quot;         &quot;apr_X.fst&quot;         &quot;apr_fstindex.rds&quot; 
+## [22] &quot;aprx_2.fst&quot;        &quot;aprx_3.fst&quot;        &quot;aprx_fstindex.rds&quot;
+## [25] &quot;pr_1.fst&quot;          &quot;pr_10.fst&quot;         &quot;pr_11.fst&quot;        
+## [28] &quot;pr_12.fst&quot;         &quot;pr_13.fst&quot;         &quot;pr_14.fst&quot;        
+## [31] &quot;pr_15.fst&quot;         &quot;pr_16.fst&quot;         &quot;pr_17.fst&quot;        
+## [34] &quot;pr_18.fst&quot;         &quot;pr_19.fst&quot;         &quot;pr_2.fst&quot;         
+## [37] &quot;pr_3.fst&quot;          &quot;pr_4.fst&quot;          &quot;pr_5.fst&quot;         
+## [40] &quot;pr_6.fst&quot;          &quot;pr_7.fst&quot;          &quot;pr_8.fst&quot;         
+## [43] &quot;pr_9.fst&quot;          &quot;pr_X.fst&quot;          &quot;pr_fstindex.rds&quot;</code></pre>
+</div>
+<div id="looking-under-the-hood-at-fst_genoprob-object" class="section level3">
+<h3>Looking under the hood at <code>&quot;fst_genoprob&quot;</code> object</h3>
+<p>Here are the names of elements in a <code>&quot;fst_genoprob&quot;</code> object:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">names</span>(<span class="kw">unclass</span>(fapr))</a></code></pre></div>
+<pre><code>## [1] &quot;dim&quot;      &quot;dimnames&quot; &quot;is_x_chr&quot; &quot;chr&quot;      &quot;ind&quot;      &quot;mar&quot;      &quot;fst&quot;</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">unclass</span>(fapr)<span class="op">$</span>fst</a></code></pre></div>
+<pre><code>## [1] &quot;/tmp/RtmpoVtj0L/iron_genoprob/apr&quot;</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">sapply</span>(<span class="kw">unclass</span>(fapr)[<span class="kw">c</span>(<span class="st">&quot;ind&quot;</span>,<span class="st">&quot;chr&quot;</span>,<span class="st">&quot;mar&quot;</span>)], length)</a></code></pre></div>
+<pre><code>## ind chr mar 
+## 284  20  66</code></pre>
+<p>An <code>&quot;fst_genoprob&quot;</code> object has all the original information. Thus, it is possible to restore the original object from a <code>subset</code> (but not necessarily from a <code>cbind</code> or <code>rbind</code>). Here is an example.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">fapr23 &lt;-<span class="st"> </span><span class="kw">subset</span>(fapr, <span class="dt">chr=</span><span class="kw">c</span>(<span class="st">&quot;2&quot;</span>,<span class="st">&quot;3&quot;</span>))</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">dim</span>(fapr23)</a></code></pre></div>
+<pre><code>##       2   3
+## ind 284 284
+## gen   2   2
+## mar   5   2</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">dim</span>(<span class="kw">fst_restore</span>(fapr23))</a></code></pre></div>
+<pre><code>##       1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19
+## ind 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284
+## gen   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2
+## mar   3   5   2   2   2   2   7   8   5   2   7   2   2   2   2   5   2   2   2
+##       X
+## ind 284
+## gen   2
+## mar   2</code></pre>
+</div>
+<div id="paths" class="section level3">
+<h3>Paths</h3>
+<p>Use <code>fst_path()</code> to determine the path to the fst database.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">fst_path</span>(fpr)</a></code></pre></div>
+<pre><code>## [1] &quot;/tmp/RtmpoVtj0L/iron_genoprob/pr&quot;</code></pre>
+<p>If you move the fst database, or if it’s using a relative path and you want to work with it from a different directory, use <code>replace_path()</code>.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">fpr_newpath &lt;-<span class="st"> </span><span class="kw">replace_path</span>(fpr, <span class="kw">tempdir</span>())</a></code></pre></div>
+</div>
+<div id="direct-construction-of-the-fst-database" class="section level3">
+<h3>Direct construction of the fst database</h3>
+<p>Since the genotype probabilities can be really large, it’s very RAM intensive to calculate all of them and then create the database. Instead, you can use <code>calc_genoprob_fst()</code> to run <code>calc_genoprob()</code> and then <code>fst_genoprob()</code> for one chromosome at a time.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">fpr &lt;-<span class="st"> </span><span class="kw">calc_genoprob_fst</span>(iron, <span class="st">&quot;pr&quot;</span>, tmpdir, <span class="dt">error_prob=</span><span class="fl">0.002</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p>Similarly, <code>genoprob_to_alleleprob_fst()</code> will run <code>genoprob_to_alleleprob()</code> and then <code>fst_genoprob()</code> for one chromosome at a time.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">fapr &lt;-<span class="st"> </span><span class="kw">genoprob_to_alleleprob_fst</span>(pr, <span class="st">&quot;apr&quot;</span>, tmpdir, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+</div>
+<div id="genome-scans" class="section level3">
+<h3>Genome scans</h3>
+<p>You can use the <code>fst_genoprob()</code> object in place of the genotype probabilities, in genome scans with <code>scan1()</code>.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">Xcovar &lt;-<span class="st"> </span><span class="kw">get_x_covar</span>(iron)</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2">scan_pr &lt;-<span class="st"> </span><span class="kw">scan1</span>(fpr, iron<span class="op">$</span>pheno, <span class="dt">Xcovar=</span>Xcovar)</a>
+<a class="sourceLine" id="cb45-3" data-line-number="3"><span class="kw">find_peaks</span>(scan_pr, iron<span class="op">$</span>pmap, <span class="dt">threshold=</span><span class="dv">4</span>)</a></code></pre></div>
+<pre><code>##   lodindex lodcolumn chr       pos       lod
+## 1        1     liver   2 122.81416  4.957564
+## 2        1     liver  16  53.96263  7.282938
+## 3        2    spleen   8  32.01662  4.302919
+## 4        2    spleen   9 101.52887 10.379771</code></pre>
+<p>Similarly for calculating QTL coefficients with <code>scan1coef()</code> or scan1blup()`:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">coef16 &lt;-<span class="st"> </span><span class="kw">scan1coef</span>(fpr[,<span class="st">&quot;16&quot;</span>], iron<span class="op">$</span>pheno[,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">blup16 &lt;-<span class="st"> </span><span class="kw">scan1blup</span>(fpr[,<span class="st">&quot;16&quot;</span>], iron<span class="op">$</span>pheno[,<span class="dv">1</span>])</a></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
