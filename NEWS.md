@@ -1,4 +1,19 @@
-## qtl2fst 0.22-6 (2020-07-20)
+## qtl2fst 0.24 (2021-04-28)
+
+### Minor changes
+
+- Fix index entry in vignette
+
+- Added tests for `qtl2::calc_het()` (which previously wasn't working
+  with qtl2fst-based probabilities). Also added tests of
+  `qtl2::calc_entropy()`, `qtl2::calc_geno_freq()`, and `qtl2::compare_genoprob()`.
+  These tests fail without qtl2 >= 0.24, so added that in Imports in
+  the description file.
+
+- Removed `LazyData` field from DESCRIPTION file
+
+
+## qtl2fst 0.22-7 (2020-07-24)
 
 ### Minor changes
 

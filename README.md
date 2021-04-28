@@ -1,6 +1,6 @@
 # qtl2fst
 
-[![Build Status](https://travis-ci.org/rqtl/qtl2fst.svg?branch=master)](https://travis-ci.org/rqtl/qtl2fst)
+[![R-CMD-check](https://github.com/rqtl/qtl2fst/workflows/R-CMD-check/badge.svg)](https://github.com/rqtl/qtl2fst/actions)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/qtl2fst)](https://cran.r-project.org/package=qtl2fst)
 
 [R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
@@ -21,6 +21,19 @@ files in the [feather](https://github.com/wesm/feather) format.
 Install R/qtl2fst from [CRAN](https://cran.r-project.org):
 
     install.packages("qtl2fst")
+
+---
+
+### Vignette
+
+View the [qtl2fst user
+guide](https://kbroman.org/qtl2/assets/vignettes/qtl2fst.html),
+available [online](https://kbroman.org/qtl2/assets/vignettes/qtl2fst.html)
+and also within R:
+
+    vignette("qtl2fst", package="qtl2fst")
+
+
 
 ---
 
