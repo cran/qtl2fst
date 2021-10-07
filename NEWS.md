@@ -1,3 +1,17 @@
+## qtl2fst 0.26 (2021-10-07)
+
+### Minor changes
+
+- If needed directory doesn't exist, create it rather than stopping
+  with an error (`fst_genoprob()` and `bind_fst()` and functions that
+  call them). Fixes [Issue #17](https://github.com/rqtl/qtl2fst/issues/17).
+
+- Fix some URLs in Readme, News, and vignette.
+
+- Have `fst_genoprob()` and `genoprob_to_alleleprob_fst()` check that
+  input is of class `"calc_genoprob"`.
+
+
 ## qtl2fst 0.24 (2021-04-28)
 
 ### Minor changes
@@ -91,7 +105,7 @@
 
 ## qtl2fst 0.1-3 (2018-03-13)
 
-- New package for storing [R/qtl2](https://kbroman.org/qtl2) genotype
+- New package for storing [R/qtl2](https://kbroman.org/qtl2/) genotype
   probabilities in files using the [fst
   package](https://www.fstpackage.org), for fast access with reduced
   memory usage.

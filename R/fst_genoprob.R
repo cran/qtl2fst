@@ -57,6 +57,10 @@
 fst_genoprob <-
     function(genoprob, fbase, fdir=".", compress=0, verbose=TRUE, overwrite=FALSE, quiet=!verbose)
 {
+    if(!inherits(genoprob, "calc_genoprob")) {
+        stop('input should have class "calc_genoprob".')
+    }
+
     if(!missing(verbose)) {
         warning('The verbose argument is deprecated and will be removed; use "quiet" instead.')
     }
@@ -90,7 +94,9 @@ fst_genoprob <-
 
     # Make sure directory exists
     if(!dir.exists(dirname(result$fst))) {
-        stop("directory ", dirname(result$fst), " does not exist")
+        newdir <- dirname(result$fst)
+        message("creating directory ", newdir)
+        dir.create(newdir, recursive=TRUE)
     }
 
     # Turn list of 3D arrays into table

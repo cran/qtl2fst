@@ -141,12 +141,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p>Memory usage can be a big obstacle in the use of <a href="https://kbroman.org/qtl2">R/qtl2</a>, particularly regarding the QTL genotype probabilities calculated by <code>calc_genoprob()</code>. For dense markers in multi-parent populations, these can use gigabytes of RAM.</p>
+<p>Memory usage can be a big obstacle in the use of <a href="https://kbroman.org/qtl2/">R/qtl2</a>, particularly regarding the QTL genotype probabilities calculated by <code>calc_genoprob()</code>. For dense markers in multi-parent populations, these can use gigabytes of RAM.</p>
 <p>This led us to develop ways to store the genotype probabilities on disk. In the present package, we rely on the <a href="https://www.fstpackage.org">fst package</a>, which includes the option to compress the data.</p>
 <p>Let’s first load the R/qtl2 and R/qtl2fst packages.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(qtl2)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(qtl2fst)</span></code></pre></div>
-<p>In this vignette, we’ll give a quick illustration of the <a href="https://github.com/rqtl/qtl2fst">R/qtl2fst</a> package using the <a href="https://kbroman.org/qtl2/pages/sampledata.html#f2-intercross">iron dataset</a> included with <a href="https://kbroman.org/qtl2">R/qtl2</a>. We’ll first load the data.</p>
+<p>In this vignette, we’ll give a quick illustration of the <a href="https://github.com/rqtl/qtl2fst">R/qtl2fst</a> package using the <a href="https://kbroman.org/qtl2/pages/sampledata.html#f2-intercross">iron dataset</a> included with <a href="https://kbroman.org/qtl2/">R/qtl2</a>. We’ll first load the data.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>iron <span class="ot">&lt;-</span> <span class="fu">read_cross2</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;iron.zip&quot;</span>, <span class="at">package=</span><span class="st">&quot;qtl2&quot;</span>))</span></code></pre></div>
 <p>Let’s calculate the genotype probabilities and convert them to allele probabilities.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pr <span class="ot">&lt;-</span> <span class="fu">calc_genoprob</span>(iron, <span class="at">error_prob=</span><span class="fl">0.002</span>)</span>
@@ -264,7 +264,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">unclass</span>(fapr))</span></code></pre></div>
 <pre><code>## [1] &quot;dim&quot;      &quot;dimnames&quot; &quot;is_x_chr&quot; &quot;chr&quot;      &quot;ind&quot;      &quot;mar&quot;      &quot;fst&quot;</code></pre>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unclass</span>(fapr)<span class="sc">$</span>fst</span></code></pre></div>
-<pre><code>## [1] &quot;/tmp/RtmpM5BYit/iron_genoprob/apr&quot;</code></pre>
+<pre><code>## [1] &quot;/tmp/Rtmpr7kpsI/iron_genoprob/apr&quot;</code></pre>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">unclass</span>(fapr)[<span class="fu">c</span>(<span class="st">&quot;ind&quot;</span>,<span class="st">&quot;chr&quot;</span>,<span class="st">&quot;mar&quot;</span>)], length)</span></code></pre></div>
 <pre><code>## ind chr mar 
 ## 284  20  66</code></pre>
@@ -289,7 +289,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>Paths</h3>
 <p>Use <code>fst_path()</code> to determine the path to the fst database.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fst_path</span>(fpr)</span></code></pre></div>
-<pre><code>## [1] &quot;/tmp/RtmpM5BYit/iron_genoprob/pr&quot;</code></pre>
+<pre><code>## [1] &quot;/tmp/Rtmpr7kpsI/iron_genoprob/pr&quot;</code></pre>
 <p>If you move the fst database, or if it’s using a relative path and you want to work with it from a different directory, use <code>replace_path()</code>.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>fpr_newpath <span class="ot">&lt;-</span> <span class="fu">replace_path</span>(fpr, <span class="fu">tempdir</span>())</span></code></pre></div>
 </div>
