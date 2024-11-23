@@ -479,7 +479,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true"></a><span class="kw">names</span>(<span class="kw">unclass</span>(fapr))</span></code></pre></div>
 <pre><code>## [1] &quot;dim&quot;      &quot;dimnames&quot; &quot;is_x_chr&quot; &quot;chr&quot;      &quot;ind&quot;      &quot;mar&quot;      &quot;fst&quot;</code></pre>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true"></a><span class="kw">unclass</span>(fapr)<span class="op">$</span>fst</span></code></pre></div>
-<pre><code>## [1] &quot;/tmp/RtmpLW1Jhv/iron_genoprob/apr&quot;</code></pre>
+<pre><code>## [1] &quot;/tmp/RtmpPGAsg7/iron_genoprob/apr&quot;</code></pre>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true"></a><span class="kw">sapply</span>(<span class="kw">unclass</span>(fapr)[<span class="kw">c</span>(<span class="st">&quot;ind&quot;</span>,<span class="st">&quot;chr&quot;</span>,<span class="st">&quot;mar&quot;</span>)], length)</span></code></pre></div>
 <pre><code>## ind chr mar 
 ## 284  20  66</code></pre>
@@ -504,7 +504,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h3>Paths</h3>
 <p>Use <code>fst_path()</code> to determine the path to the fst database.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true"></a><span class="kw">fst_path</span>(fpr)</span></code></pre></div>
-<pre><code>## [1] &quot;/tmp/RtmpLW1Jhv/iron_genoprob/pr&quot;</code></pre>
+<pre><code>## [1] &quot;/tmp/RtmpPGAsg7/iron_genoprob/pr&quot;</code></pre>
 <p>If you move the fst database, or if it’s using a relative path and you want to work with it from a different directory, use <code>replace_path()</code>.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true"></a>fpr_newpath &lt;-<span class="st"> </span><span class="kw">replace_path</span>(fpr, <span class="kw">tempdir</span>())</span></code></pre></div>
 </div>
